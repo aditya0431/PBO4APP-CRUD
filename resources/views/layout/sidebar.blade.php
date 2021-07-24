@@ -29,21 +29,26 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-          <li class="nav-item has-treeview menu-open">
-            <a href="#" class="nav-link active">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
-                Kelompok warga
-                <i class="right fas fa-angle-left"></i>
-              </p>
+          <li class="nav-item">
+            <a href="{{ asset (") }}" class="nav-link active">
+              <i class="nav-icon fas fa-th"></i>
+              <p> home</p>
             </a>
+            </li>
+            @foreach ($data_menu as $category)
+            <li class="nav nav-treeview">
+            <a href='#' class="nav-lin">
+            <i class="nav-icon fas fa-tachometer-alt"></i>
+            <p>{{ $category->namamenu }}<i class="right fas fa-angle-left"></i>
+            </p>
             <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="#" class="nav-link active">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Data warga</p>
-                </a>
+              @foreach($category->childrenCategories as $childCategory)
+              @include('layout.child_category',['child_category'=>$childCategory])
+              @endforeach
+              </ul>
               </li>
+              @endforeach
+              </ul>
       </nav>
       <!-- /.sidebar-menu -->
     </div>

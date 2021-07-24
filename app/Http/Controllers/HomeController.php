@@ -9,45 +9,11 @@ use App\sysuser;
 class HomeController extends Controller
 {
 	
-     public function index(Request $request)
+	 public function index(Request $request)
 	 {
-			return view('layout.app');
+		 $categories = sysmenu::where('sysmenu_id','=','1')
+		 ->with('childrenCategories')
+		 ->get();
+		 return view('layout.app',['data_menu'=>$categories]);
 	 }
-	 public function login(request $request)
-	 {
-		 $session = $request->session()->exists('userif');
-		 if(!$session){
-			 return view('auth.login');
-	 }else{
-		 return redirect('/');
-	 }
-	 }
-	 public function masuk(Request $request)
-	 {
-		$user_name = $request->input('txtuser');
-		$pwd	   = sha1($request->input('txtpass'));
-		$sys_user = new sysuser();
-		$data = $sys_user::where([
-			['uname', '=', $user_name],['upass', '=', $pwd]
-			])->get();
-		$user = NULL;
-		foreach ($data as $key => $value) {
-			$user = $value->uname;
-			$nama = $value->namalengkap;
-			$email = $value->email;
-		}
-		if($user){
-			session([
-			'userid'=> $user,
-			'nama'=>$nama,
-			'email'=> $email
-			]);
-			$session = $request->session()->get('userid');
-			if($session){
-				return redirect('/');
-			}
-		}else{
-			return redirect('/');
-		}
-	 }
-}
+	}
